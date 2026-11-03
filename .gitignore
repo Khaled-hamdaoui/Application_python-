@@ -1,0 +1,23 @@
+# Environnement Python
+.venv/
+venv/
+__pycache__/
+*.pyc
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Systèmes / éditeurs
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+
+# Fichiers temporaires Office
+~$*
+
+# Données volumineuses : décommenter si les fichiers bruts sont trop lourds
+# (ils seront alors récupérés par scripts/telecharger_donnees.py)
+# data/raw/*
+# !data/raw/.gitkeep
