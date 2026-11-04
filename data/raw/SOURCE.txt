@@ -1,0 +1,9 @@
+Jeu de données : Fichier cumulatif des données des urgences
+Page Données Québec : https://www.donneesquebec.ca/recherche/dataset/fichier-cumulatif-des-donnees-des-urgences
+Organisme : Ministère de la Santé et des services sociaux
+Licence : Attribution (CC-BY 4.0)
+Couverture temporelle : 2019-04-01 à la dernière période financière terminée 
+Fréquence de mise à jour : monthly
+Métadonnées modifiées le : 2026-09-13
+URL du fichier : https://www.msss.gouv.qc.ca/professionnels/statistiques/documents/urgences/Donnees_cumulatives_Urgence.csv
+Téléchargé le : 2026-11-03
