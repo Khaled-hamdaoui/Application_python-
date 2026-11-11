@@ -3,11 +3,12 @@
 UQAC · Automne 2026 · Groupe 01 · Chargé de cours : Noureddine Lourimi
 
 ## Équipe
-| Membre | Rôle principal | Notebook de travail |
-|---|---|---|
-| Mamadou Lamine Barry | _à compléter_ | _à compléter_ |
-| _Membre 1_ | Préparation des données | `notebooks/01_preparation.ipynb` |
-| _Membre 2_ | Exploration et visualisations | `notebooks/02_exploration.ipynb` |
+| Membre | Nom | Rôle principal | Fichiers principaux |
+|---|---|---|---|
+| Membre 1 | Mamadou Lamine Barry | Données et qualité | `notebooks/01_preparation.ipynb`, `docs/journal_decisions.md` |
+| Membre 2 | Khaled Hamdaoui | Analyse et figures | `notebooks/02_exploration.ipynb`, `figures/` |
+| Membre 3 | Émilie Gagnon | Interprétation et synthèse | `notebooks/analyse_eda.ipynb` (§6–7), `rapport/` |
+| Membre 4 | Khadiatou Sow | Coordination et présentation | `notebooks/analyse_eda.ipynb` (assemblage), `presentation/` |
 
 ## Problématique
 - **Question principale :** _à définir (validation le 25 novembre 2026)_
@@ -39,9 +40,9 @@ UQAC · Automne 2026 · Groupe 01 · Chargé de cours : Noureddine Lourimi
 ├── scripts/
 │   └── telecharger_donnees.py  Récupération des données via l'API de Données Québec
 ├── notebooks/
-│   ├── 01_preparation.ipynb    Travail du membre 1 : nettoyage et variables dérivées
-│   ├── 02_exploration.ipynb    Travail du membre 2 : statistiques et figures
-│   └── analyse_eda.ipynb       Notebook final remis sur Moodle
+│   ├── 01_preparation.ipynb    Membre 1 (M. L. Barry) : nettoyage et variables dérivées
+│   ├── 02_exploration.ipynb    Membre 2 (K. Hamdaoui) : statistiques et figures
+│   └── analyse_eda.ipynb       Notebook final remis sur Moodle (assemblé par le membre 4)
 ├── docs/
 │   ├── urgences_variables_notes_methodo.pdf  Dictionnaire des variables du MSSS
 │   └── journal_decisions.md    Décisions de nettoyage et d'analyse, avec justification

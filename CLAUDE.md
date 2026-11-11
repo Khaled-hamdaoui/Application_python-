@@ -5,6 +5,14 @@ Instructions pour Claude Code (et tout assistant IA) qui travaille dans ce dép�
 ## Contexte
 Projet final du cours 8PRO409 (UQAC, automne 2026) : analyse exploratoire (EDA) en équipe du jeu « Fichier cumulatif des données des urgences » du MSSS, publié sur Données Québec. Consignes : `Projet_Final_Consignes.pdf`. Remise sur Moodle le 9 décembre 2026 avant 8 h. Aucun modèle de machine learning n'est attendu.
 
+## Équipe
+| Membre | Nom | Rôle principal |
+|---|---|---|
+| Membre 1 | Mamadou Lamine Barry | Données et qualité (`01_preparation.ipynb`, journal des décisions) |
+| Membre 2 | Khaled Hamdaoui | Analyse et figures (`02_exploration.ipynb`, `figures/`) |
+| Membre 3 | Émilie Gagnon | Interprétation et synthèse (§6–7 du notebook final, `rapport/`) |
+| Membre 4 | Khadiatou Sow | Coordination et présentation (assemblage d'`analyse_eda.ipynb`, `presentation/`) |
+
 ## Langue
 Tout le contenu (Markdown, commentaires, noms de variables descriptifs, messages de commit) est rédigé en français.
 
@@ -12,8 +20,8 @@ Tout le contenu (Markdown, commentaires, noms de variables descriptifs, messages
 - `data/raw/` : données brutes telles que téléchargées. **Ne jamais modifier.**
 - `data/processed/` : données nettoyées, produites uniquement par les notebooks.
 - `scripts/telecharger_donnees.py` : récupération des données via l'API CKAN de Données Québec.
-- `notebooks/01_preparation.ipynb` (membre 1), `notebooks/02_exploration.ipynb` (membre 2) : notebooks de travail.
-- `notebooks/analyse_eda.ipynb` : notebook final remis. Il doit être autonome et s'exécuter du début à la fin.
+- `notebooks/01_preparation.ipynb` (membre 1, Mamadou Lamine Barry), `notebooks/02_exploration.ipynb` (membre 2, Khaled Hamdaoui) : notebooks de travail.
+- `notebooks/analyse_eda.ipynb` : notebook final remis, assemblé par le membre 4 (Khadiatou Sow). Il doit être autonome et s'exécuter du début à la fin.
 - `docs/` : dictionnaire des variables du MSSS (`urgences_variables_notes_methodo.pdf`) et journal des décisions (`journal_decisions.md`).
 - `USAGE_IA.md` : déclaration de l'usage de l'IA.
 
