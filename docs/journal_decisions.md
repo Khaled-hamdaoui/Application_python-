@@ -21,6 +21,29 @@ Décisions de données et d'analyse, avec leur justification chiffrée. Les chif
 |---|---|---|---|
 | **R1** | Pour agréger une durée sur plusieurs installations (région, province, année), utiliser une **moyenne pondérée**, jamais une moyenne simple. `dms_total` est pondérée par `nb_visites_total`, `dms_ambulatoire` par `nb_visites_ambulatoire`, `dms_sur_civiere` par `nb_visites_sur_civiere`. `delai_pec_total` est pondéré par `nb_usagers_pec_total`, et de même pour les délais ambulatoire et sur civière avec leur nombre d'usagers pris en charge. | Avec ces poids, la moyenne des installations redonne **exactement** les valeurs du total provincial officiel pour les 6 durées et les 6 années (écart de 0). Une moyenne simple s'en écarte jusqu'à 1,51 h pour `dms_total` et 2,67 h pour `dms_sur_civiere`, car elle donne le même poids à une urgence de 400 visites qu'à une de 55 000. Pondérer le délai par les visites au lieu des prises en charge donne aussi un écart (jusqu'à 0,10 h). | Proposée, à valider par l'équipe (non incluse dans la validation de D1 à D6) |
 
+## Variables dérivées (`01_preparation.ipynb`, section 3)
+
+Les parts et les taux sont en pourcentage (0 à 100). Ils valent NaN quand le dénominateur est 0. Pour les agréger, il faut recalculer la part à partir des sommes des comptes, jamais faire la moyenne des pourcentages (même principe que R1).
+
+| ID | Variable | Calcul | Justification | Contrôle | Statut |
+|---|---|---|---|---|---|
+| V1 | `annee_debut` | `int(annee[:4])` | Ordonner les années et calculer V8 | 2021 à 2026 | Créée le 2026-11-11, à valider par l'équipe |
+| V2 | `part_75ans_plus_pct` | `nb_usagers_75ans_et_plus_total / nb_visites_total × 100` | Comparer le poids des patients âgés indépendamment de la taille de l'urgence | 0 à 35,5 % ; 0 % = CHU Sainte-Justine (pédiatrie) | Idem |
+| V3 | `part_sante_mentale_pct` | `nb_usagers_sante_mentale_total / nb_visites_total × 100` | Idem pour la santé mentale | 1,2 à 99,8 % ; max = Institut universitaire en santé mentale de Montréal | Idem |
+| V4 | `part_civiere_pct` | `nb_visites_sur_civiere / nb_visites_total × 100` | Lourdeur de la clientèle | 0 à 65,5 % | Idem |
+| V5 | `taux_pec_pct` | `nb_usagers_pec_total / nb_visites_total × 100` | Part des visites vues par un médecin (le PDF exclut les réorientés et les départs avant prise en charge, p. 3) | 50,2 à 100 % | Idem |
+| V6 | `taux_civiere_24h_pct` | `nb_usagers_sur_civiere_plus_24h / nb_visites_sur_civiere × 100` | Le compte brut des séjours de plus de 24 h dépend de la taille (34 lignes atypiques en compte brut, voir D5) | 0 à 66,7 % ; 1 NaN (Radisson, 0 visite sur civière) | Idem |
+| V7 | `taux_civiere_48h_pct` | `nb_usagers_sur_civiere_plus_48h / nb_visites_sur_civiere × 100` | Idem pour 48 h | 0 à 30,3 % ; 1 NaN (Radisson) | Idem |
+| V8 | `variation_visites_pct` | `(visites / visites de l'année précédente − 1) × 100`, même installation, années consécutives seulement | Suivre l'évolution de chaque urgence | 564 valeurs ; 120 NaN (première année de présence : 115 en 2021-2022, 1 en 2025-2026, 4 en 2026-2027) | Idem |
+
+Après ajout de ces variables, `data/processed/urgences_propre.csv` compte 684 lignes × 36 colonnes.
+
+## Points ouverts
+
+| ID | Constat | Chiffres | Options possibles | Statut |
+|---|---|---|---|---|
+| **O1** | Trois installations ont un saut de volume qui ressemble à une **première année partielle** (ouverture, transfert ou déclaration en cours de période), sans que le fichier permette de le confirmer. | Paul-Gilbert (Chaudière-Appalaches) : 3 196 → 24 802 visites en 2022-2023 (+676 %), puis stable (de 22 821 à 23 565) ; Chauveau (Capitale-Nationale) : 13 019 → 23 559 (+81 %), puis stable (de 21 274 à 24 633) ; Chibougamau (Nord-du-Québec) : 978 → 5 770 en 2026-2027 (+490 %). Paul-Gilbert et Chauveau font partie du périmètre constant. Aucune autre variation ne dépasse ±50 % (la suivante en valeur absolue est −43,3 %, Fortierville en 2025-2026). | (a) Ne rien changer et signaler le point comme limite. (b) Faire commencer les comparaisons temporelles en 2022-2023. (c) Exclure ces installations de 2021-2022 du périmètre constant. | À discuter en équipe. Aucune modification appliquée |
+
 ## Vérifications dans le PDF du MSSS
 
 | Point vérifié | Ce que dit le PDF | Page | Conclusion |

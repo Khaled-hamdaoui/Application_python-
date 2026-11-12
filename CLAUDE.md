@@ -36,7 +36,7 @@ Tout le contenu (Markdown, commentaires, noms de variables descriptifs, messages
 - L'IA explique et propose ; les étudiants doivent comprendre, vérifier et pouvoir défendre tout le code et toutes les interprétations à l'oral.
 
 ## Particularités des données (voir `docs/journal_decisions.md`)
-- **Pour l'analyse, utiliser `data/processed/urgences_propre.csv`** (684 lignes × 28 colonnes, produit par `01_preparation.ipynb`, décisions D1 à D6 appliquées) :
+- **Pour l'analyse, utiliser `data/processed/urgences_propre.csv`** (684 lignes × 36 colonnes, produit par `01_preparation.ipynb`, décisions D1 à D6 appliquées, variables dérivées V1 à V8 incluses) :
   `pd.read_csv(RACINE / "data" / "processed" / "urgences_propre.csv", dtype={"no_permis_installation": str})`.
 - Le CSV brut est en UTF-8 avec BOM (`encoding="utf-8-sig"`). Il mélange des lignes de total et des lignes d'installation : dans le fichier propre, seules les installations sont gardées (D1).
 - La région RSS 10, étiquetée `"Error"` dans la source, est renommée « Nord-du-Québec » dans le fichier propre (D2).
@@ -44,6 +44,13 @@ Tout le contenu (Markdown, commentaires, noms de variables descriptifs, messages
 - Une seule valeur manquante (Radisson 2026-2027, 0 visite sur civière) : ne pas l'imputer (D4). Les valeurs atypiques sont réelles et conservées (D5).
 - Les durées (`dms_*`, `delai_pec_*`) sont interprétées comme des heures : hypothèse à signaler, car le PDF du MSSS ne précise pas l'unité (D6).
 - Les années couvrent seulement les périodes financières 1 à 7 (du 1er avril à environ la mi-octobre, date de fin estimée), pas l'année complète.
+- **Variables dérivées** (en %, sauf V1 ; à valider par l'équipe) :
+  - `annee_debut` (V1) : année de début de l'année financière, en entier ;
+  - `part_75ans_plus_pct` (V2), `part_sante_mentale_pct` (V3), `part_civiere_pct` (V4), `taux_pec_pct` (V5) : rapportées à `nb_visites_total` ;
+  - `taux_civiere_24h_pct` (V6), `taux_civiere_48h_pct` (V7) : rapportés à `nb_visites_sur_civiere`, avec un NaN pour Radisson 2026-2027 ;
+  - `variation_visites_pct` (V8) : variation par rapport à l'année précédente, même installation, NaN la première année de présence.
+  Pour agréger une part ou un taux, il faut le recalculer à partir des sommes des comptes, jamais faire la moyenne des pourcentages.
+- **Point ouvert O1 (à décider en équipe)** : Paul-Gilbert (+676 %), Chauveau (+81 %) en 2022-2023 et Chibougamau (+490 %) en 2026-2027 ont une première année qui semble partielle. Paul-Gilbert et Chauveau sont dans le périmètre constant. Rien n'est modifié tant que l'équipe n'a pas tranché.
 - **Règle R1 (proposée, à valider par l'équipe)** : pour agréger une durée, utiliser une moyenne pondérée, jamais une moyenne simple. `dms_*` est pondérée par le nombre de visites correspondant (`nb_visites_total`, `nb_visites_ambulatoire`, `nb_visites_sur_civiere`). `delai_pec_*` est pondéré par le nombre d'usagers pris en charge correspondant (`nb_usagers_pec_*`). Avec ces poids, on retrouve exactement les valeurs provinciales officielles.
 
 ## Git
