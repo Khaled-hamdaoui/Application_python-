@@ -19,15 +19,17 @@ Décisions de données et d'analyse, avec leur justification chiffrée. Les chif
 
 | ID | Règle | Justification chiffrée | Statut |
 |---|---|---|---|
-| **R1** | Pour agréger une durée sur plusieurs installations (région, province, année), utiliser une **moyenne pondérée**, jamais une moyenne simple. `dms_total` est pondérée par `nb_visites_total`, `dms_ambulatoire` par `nb_visites_ambulatoire`, `dms_sur_civiere` par `nb_visites_sur_civiere`. `delai_pec_total` est pondéré par `nb_usagers_pec_total`, et de même pour les délais ambulatoire et sur civière avec leur nombre d'usagers pris en charge. | Avec ces poids, la moyenne des installations redonne **exactement** les valeurs du total provincial officiel pour les 6 durées et les 6 années (écart de 0). Une moyenne simple s'en écarte jusqu'à 1,51 h pour `dms_total` et 2,67 h pour `dms_sur_civiere`, car elle donne le même poids à une urgence de 400 visites qu'à une de 55 000. Pondérer le délai par les visites au lieu des prises en charge donne aussi un écart (jusqu'à 0,10 h). | Proposée, à valider par l'équipe (non incluse dans la validation de D1 à D6) |
+| **R1** | Pour agréger une durée sur plusieurs installations (région, province, année), utiliser une **moyenne pondérée**, jamais une moyenne simple. `dms_total` est pondérée par `nb_visites_total`, `dms_ambulatoire` par `nb_visites_ambulatoire`, `dms_sur_civiere` par `nb_visites_sur_civiere`. `delai_pec_total` est pondéré par `nb_usagers_pec_total`, et de même pour les délais ambulatoire et sur civière avec leur nombre d'usagers pris en charge. | Avec ces poids, la moyenne des installations redonne **exactement** les valeurs du total provincial officiel pour les 6 durées et les 6 années (écart de 0). Une moyenne simple s'en écarte jusqu'à 1,51 h pour `dms_total` et 2,67 h pour `dms_sur_civiere`, car elle donne le même poids à une urgence de 400 visites qu'à une de 55 000. Pondérer le délai par les visites au lieu des prises en charge donne aussi un écart (jusqu'à 0,10 h). | Validée par Mamadou Lamine Barry au nom de l'équipe, le 2026-11-11 |
 
 ## Variables dérivées (`01_preparation.ipynb`, section 3)
 
 Les parts et les taux sont en pourcentage (0 à 100). Ils valent NaN quand le dénominateur est 0. Pour les agréger, il faut recalculer la part à partir des sommes des comptes, jamais faire la moyenne des pourcentages (même principe que R1).
 
+La validation porte sur la **construction** des variables (formule, dénominateur, traitement des NaN). **Le choix des variables présentées dans l'analyse revient au membre 2 (Khaled Hamdaoui, analyse et figures).**
+
 | ID | Variable | Calcul | Justification | Contrôle | Statut |
 |---|---|---|---|---|---|
-| V1 | `annee_debut` | `int(annee[:4])` | Ordonner les années et calculer V8 | 2021 à 2026 | Créée le 2026-11-11, à valider par l'équipe |
+| V1 | `annee_debut` | `int(annee[:4])` | Ordonner les années et calculer V8 | 2021 à 2026 | Validée par Mamadou Lamine Barry au nom de l'équipe, le 2026-11-11 |
 | V2 | `part_75ans_plus_pct` | `nb_usagers_75ans_et_plus_total / nb_visites_total × 100` | Comparer le poids des patients âgés indépendamment de la taille de l'urgence | 0 à 35,5 % ; 0 % = CHU Sainte-Justine (pédiatrie) | Idem |
 | V3 | `part_sante_mentale_pct` | `nb_usagers_sante_mentale_total / nb_visites_total × 100` | Idem pour la santé mentale | 1,2 à 99,8 % ; max = Institut universitaire en santé mentale de Montréal | Idem |
 | V4 | `part_civiere_pct` | `nb_visites_sur_civiere / nb_visites_total × 100` | Lourdeur de la clientèle | 0 à 65,5 % | Idem |
@@ -38,11 +40,11 @@ Les parts et les taux sont en pourcentage (0 à 100). Ils valent NaN quand le d�
 
 Après ajout de ces variables, `data/processed/urgences_propre.csv` compte 684 lignes × 36 colonnes.
 
-## Points ouverts
+## Points tranchés après diagnostic
 
-| ID | Constat | Chiffres | Options possibles | Statut |
+| ID | Constat | Chiffres | Options examinées | Statut |
 |---|---|---|---|---|
-| **O1** | Trois installations ont un saut de volume qui ressemble à une **première année partielle** (ouverture, transfert ou déclaration en cours de période), sans que le fichier permette de le confirmer. | Paul-Gilbert (Chaudière-Appalaches) : 3 196 → 24 802 visites en 2022-2023 (+676 %), puis stable (de 22 821 à 23 565) ; Chauveau (Capitale-Nationale) : 13 019 → 23 559 (+81 %), puis stable (de 21 274 à 24 633) ; Chibougamau (Nord-du-Québec) : 978 → 5 770 en 2026-2027 (+490 %). Paul-Gilbert et Chauveau font partie du périmètre constant. Aucune autre variation ne dépasse ±50 % (la suivante en valeur absolue est −43,3 %, Fortierville en 2025-2026). | (a) Ne rien changer et signaler le point comme limite. (b) Faire commencer les comparaisons temporelles en 2022-2023. (c) Exclure ces installations de 2021-2022 du périmètre constant. | À discuter en équipe. Aucune modification appliquée |
+| **O1** | Trois installations ont un saut de volume qui ressemble à une **première année partielle** (ouverture, transfert ou déclaration en cours de période), sans que le fichier permette de le confirmer. | Paul-Gilbert (Chaudière-Appalaches) : 3 196 → 24 802 visites en 2022-2023 (+676 %), puis stable (de 22 821 à 23 565) ; Chauveau (Capitale-Nationale) : 13 019 → 23 559 (+81 %), puis stable (de 21 274 à 24 633) ; Chibougamau (Nord-du-Québec) : 978 → 5 770 en 2026-2027 (+490 %). Paul-Gilbert et Chauveau font partie du périmètre constant. Aucune autre variation ne dépasse ±50 % (la suivante en valeur absolue est −43,3 %, Fortierville en 2025-2026). | (a) Ne rien changer, départ en 2021-2022, et signaler le point comme limite. (b) Faire commencer les comparaisons temporelles en 2022-2023. (c) Exclure Paul-Gilbert et Chauveau du périmètre constant. **(d) Présenter les résultats avec les deux années de départ, c'est-à-dire (a) et (b) ensemble.** Effet chiffré (périmètre constant, jusqu'à 2026-2027) : visites +14,4 % en (a), +7,0 % en (b), +12,6 % en (c). Durée moyenne sur civière pondérée : 16,38 → 17,14 h en (a), mais 17,95 → 17,14 h en (b). Taux de séjours ≥ 24 h : 21,26 → 22,25 % en (a), mais 23,59 → 22,25 % en (b). L'année de départ peut donc inverser le sens de l'évolution ; retirer les deux installations (c) change les durées et le taux de moins de 0,1 point. | **Option (d) retenue**, validée par Mamadou Lamine Barry au nom de l'équipe, le 2026-11-11. Les comparaisons temporelles sont présentées avec un départ en 2021-2022 et un départ en 2022-2023, à périmètre constant. Cette double présentation pourra servir de **contrôle complémentaire** (sensibilité à l'année de départ, section 6 du notebook final). Aucune donnée modifiée : il suffit de filtrer sur `perimetre_constant` et `annee_debut`. À signaler aussi : les visites sur civière de Paul-Gilbert chutent de 662 à 26 en 2024-2025. |
 
 ## Vérifications dans le PDF du MSSS
 
