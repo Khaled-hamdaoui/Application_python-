@@ -36,11 +36,15 @@ Tout le contenu (Markdown, commentaires, noms de variables descriptifs, messages
 - L'IA explique et propose ; les étudiants doivent comprendre, vérifier et pouvoir défendre tout le code et toutes les interprétations à l'oral.
 
 ## Particularités des données (voir `docs/journal_decisions.md`)
-- Le CSV est en UTF-8 avec BOM : `pd.read_csv(..., encoding="utf-8-sig")`.
-- Il mélange des lignes de total (« Total provincial », « Total régional », « Total établissement », permis `"."`) et des lignes d'installation : ne garder que les installations.
-- La région du code RSS 10 est étiquetée `"Error"` : il s'agit du Nord-du-Québec.
-- Le périmètre change selon l'année (12 installations absentes en 2026-2027) : comparer les années à périmètre constant.
-- Les durées (`dms_*`, `delai_pec_*`) sont interprétées comme des heures (hypothèse à signaler).
+- **Pour l'analyse, utiliser `data/processed/urgences_propre.csv`** (684 lignes × 28 colonnes, produit par `01_preparation.ipynb`, décisions D1 à D6 appliquées) :
+  `pd.read_csv(RACINE / "data" / "processed" / "urgences_propre.csv", dtype={"no_permis_installation": str})`.
+- Le CSV brut est en UTF-8 avec BOM (`encoding="utf-8-sig"`). Il mélange des lignes de total et des lignes d'installation : dans le fichier propre, seules les installations sont gardées (D1).
+- La région RSS 10, étiquetée `"Error"` dans la source, est renommée « Nord-du-Québec » dans le fichier propre (D2).
+- Le périmètre change selon l'année : 12 installations sont absentes en 2026-2027, dont toute la Mauricie et Centre-du-Québec. Toutes les années sont gardées, avec la colonne booléenne **`perimetre_constant`** (vraie pour les 103 installations présentes les 6 années). **Toute comparaison entre années filtre `df[df["perimetre_constant"]]`** (D3).
+- Une seule valeur manquante (Radisson 2026-2027, 0 visite sur civière) : ne pas l'imputer (D4). Les valeurs atypiques sont réelles et conservées (D5).
+- Les durées (`dms_*`, `delai_pec_*`) sont interprétées comme des heures : hypothèse à signaler, car le PDF du MSSS ne précise pas l'unité (D6).
+- Les années couvrent seulement les périodes financières 1 à 7 (du 1er avril à environ la mi-octobre, date de fin estimée), pas l'année complète.
+- **Règle R1 (proposée, à valider par l'équipe)** : pour agréger une durée, utiliser une moyenne pondérée, jamais une moyenne simple. `dms_*` est pondérée par le nombre de visites correspondant (`nb_visites_total`, `nb_visites_ambulatoire`, `nb_visites_sur_civiere`). `delai_pec_*` est pondéré par le nombre d'usagers pris en charge correspondant (`nb_usagers_pec_*`). Avec ces poids, on retrouve exactement les valeurs provinciales officielles.
 
 ## Git
 - `git pull` avant de commencer à travailler, commit et push à la fin de chaque séance.
