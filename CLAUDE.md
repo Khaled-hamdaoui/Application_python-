@@ -13,6 +13,8 @@ Projet final du cours 8PRO409 (UQAC, automne 2026) : analyse exploratoire (EDA) 
 | Membre 3 | Émilie Gagnon | Interprétation et synthèse (§6–7 du notebook final, `rapport/`) |
 | Membre 4 | Khadiatou Sow | Coordination et présentation (assemblage d'`analyse_eda.ipynb`, `presentation/`) |
 
+Chaque membre indique son rôle et les fichiers qu'il peut modifier dans un fichier `CLAUDE.local.md` à la racine. Ce fichier est propre à chaque poste, lu automatiquement par Claude Code et exclu de Git par `.gitignore`.
+
 ## Langue
 Tout le contenu (Markdown, commentaires, noms de variables descriptifs, messages de commit) est rédigé en français.
 
